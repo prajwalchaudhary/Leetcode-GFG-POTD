@@ -1,0 +1,47 @@
+ASCII Range Sum
+
+Given a string s consisting of lowercase English letters, for every character whose first and last occurrences are at different positions, calculate the sum of ASCII values of characters strictly between its first and last occurrence.
+Return all such non-zero sums (order does not matter).
+
+Examples:
+
+Input: s = "abacab"
+Output: [293, 294]
+Explanation: characters 'a' and 'b' appear more than once:
+'a' : between positions 1 and 5 → characters are b, a, c and ascii sum is 98 + 97 + 99 = 294.
+'b' : between positions 2 and 6 → characters are a, c, a and ascii sum is 97 + 99 + 97 = 293.
+
+Approach : Firstly we need to store first and last occurence of character with the use of map so that we can solve it in O(N) time complexity and O(1) space complexity becuase we only store for 26 characters max to max. 
+
+Solution : 
+
+class Solution {
+  public:
+    vector<int> asciirange(string& s) {
+        unordered_map<char,pair<int,int>>mp;
+        int n=s.size();
+        for(int i=0;i<n;i++){
+            if(mp.find(s[i])==mp.end()){
+                mp[s[i]]={i,i};
+            }
+            else{
+                mp[s[i]].second=i;
+            }
+        }
+        vector<int>ans;
+        for(auto i:mp){
+            int start=i.second.first;
+            int end=i.second.second;
+            if(start!=end && end>start+1){
+                int temp=0;
+                for(int i=start+1;i<end;i++){
+                    temp+=int(s[i]);
+                }
+                if(temp>0){
+                    ans.push_back(temp);
+                }
+            }
+        }
+        return ans;
+    }
+};
